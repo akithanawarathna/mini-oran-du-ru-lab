@@ -1,4 +1,6 @@
 # mini-oran-du-ru-lab
+<img width="1097" height="476" alt="image" src="https://github.com/user-attachments/assets/d798725a-491b-4517-a238-4817f3f2370b" />
+
 
 A compact “DU/RU-like” lab project demonstrating:
 - OFDM baseband DSP primitives (FFT-centric)
