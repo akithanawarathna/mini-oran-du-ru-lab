@@ -11,7 +11,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 
 module complex_mul_axis_wrap #(
-    parameter integer PIPE_LAT   = 2,   // complex_mul_axis latency in cycles
+    //parameter integer PIPE_LAT   = 2,   // complex_mul_axis latency in cycles
+    parameter integer PIPE_LAT   = 3,
     parameter integer FIFO_DEPTH = 8  
 )(
     input  wire        aclk,
@@ -33,9 +34,13 @@ module complex_mul_axis_wrap #(
     localparam integer ADDR_W = $clog2(FIFO_DEPTH);
 
     reg [PIPE_LAT-1:0] inflight_sr; //shift reegister
-    wire [ADDR_W:0] inflight_cnt = (PIPE_LAT == 1) ? inflight_sr[0] :
-                                   (PIPE_LAT == 2) ? (inflight_sr[0] + inflight_sr[1]) :
-                                   inflight_sr[0] + inflight_sr[1] + inflight_sr[2]; // extend if needed
+//    wire [ADDR_W:0] inflight_cnt = (PIPE_LAT == 1) ? inflight_sr[0] :
+//                                   (PIPE_LAT == 2) ? (inflight_sr[0] + inflight_sr[1]) :
+//                                   inflight_sr[0] + inflight_sr[1] + inflight_sr[2]; // extend if needed
+wire [ADDR_W:0] inflight_cnt =
+    (PIPE_LAT == 1) ? inflight_sr[0] :
+    (PIPE_LAT == 2) ? (inflight_sr[0] + inflight_sr[1]) :
+    (inflight_sr[0] + inflight_sr[1] + inflight_sr[2]); // PIPE_LAT==3
 
     // -----------------------------------------------------------------------
     //  TLAST alignment: shift TLAST alongside accepted inputs.
